@@ -1,3 +1,14 @@
+import { Transform } from 'stream';
+import { stdin, stdout } from 'process';
+
 export const transform = async () => {
-    // Write your code here 
+  const transformed = new Transform({
+    transform(chunk, encoding, callback) {
+      this.push(chunk.toString().split('').reverse().join('') + '\n');
+      callback();
+    },
+  });
+  stdin.pipe(transformed).pipe(stdout);
 };
+transform();
+//node ./src/streams/transform.js
